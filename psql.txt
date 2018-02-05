@@ -1,0 +1,70 @@
+kevin=# \c movies 
+You are now connected to database "movies" as user "kevin".
+movies=# CREATE TABLE 
+movie(
+id SERIAL,
+nombre varchar(50)
+)
+;
+CREATE TABLE
+movies=# \dt
+       List of relations
+ Schema | Name  | Type  | Owner 
+--------+-------+-------+-------
+ public | movie | table | kevin
+(1 row)                           ^                      ^
+movies=# INSERT INTO movie (nombre)  VALUES ('El Rey Leon');
+INSERT 0 1
+movies=# INSERT INTO movie (nombre)  VALUES ('Terminator II');
+INSERT 0 1
+movies=# ALTER TABLE movies  ADD COLUMN año  varchar(50);
+ERROR:  relation "movies" does not exist
+movies=# ALTER TABLE movie  ADD COLUMN año  varchar(50);
+ALTER TABLE
+movies=# \dt
+       List of relations
+ Schema | Name  | Type  | Owner 
+--------+-------+-------+-------
+ public | movie | table | kevin
+(1 row)
+movies=# SELECT * FROM movie;
+ id |    nombre     | año 
+----+---------------+-----
+  1 | El Rey Leon   | 
+  2 | Terminator II | 
+(2 rows)
+
+movies=# UPDATE movie SET año= 1984;
+UPDATE 2
+movies=# SELECT * FROM movie;
+ id |    nombre     | año  
+----+---------------+------
+  1 | El Rey Leon   | 1984
+  2 | Terminator II | 1984
+(2 rows)                                                    ^
+movies=# DELETE FROM movie WHERE nombre='Terminator II';
+DELETE 1
+movies=# SELECT * FROM movie;
+ id |   nombre    | año  
+----+-------------+------
+  1 | El Rey Leon | 1984
+(1 row)
+
+movies=# ALTER TABLE movie  ADD COLUMN genero  varchar(50);
+ALTER TABLE
+movies=# SELECT * FROM movie;
+ id |   nombre    | año  | genero 
+----+-------------+------+--------
+  1 | El Rey Leon | 1984 | 
+(1 row)
+
+movies=# UPDATE movie SET genero='Drama';
+UPDATE 1
+movies=# INSERT INTO movie (nombre)  VALUES ('El Crimen perfecto');
+INSERT 0 1
+movies=# SELECT * FROM movie;
+ id |       nombre       | año  | genero 
+----+--------------------+------+--------
+  1 | El Rey Leon        | 1984 | Drama
+  3 | El Crimen perfecto |      | 
+(2 rows)
